@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ClerkProvider, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import { Show } from "@/components/clerk-helpers";
 import { UIProvider } from "@/components/ui-provider";
+import { ApiKeyProvider } from "@/components/api-key-provider";
 import { Header } from "@/components/header";
 import { LayoutWrapper } from "@/components/layout-wrapper";
 import { Caveat, Nunito, Kalam, Inter } from "next/font/google";
@@ -93,6 +94,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable}  ${inter.variable} ${kalam.variable} antialiased`}
       >
         <ClerkProvider>
+          <ApiKeyProvider>
           <UIProvider>
             <Header>
               <Show when="signed-out">
@@ -123,6 +125,7 @@ export default function RootLayout({
               {children}
             </LayoutWrapper>
           </UIProvider>
+          </ApiKeyProvider>
         </ClerkProvider>
       </body>
     </html>

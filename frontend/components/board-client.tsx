@@ -4,14 +4,18 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { Whiteboard } from "@/components/whiteboard";
 import { IntentInput } from "@/components/intent-input";
 import { Button } from "@/components/ui/button";
-import { Loader2, Plus, RotateCcw, Sparkles, Check, X, Mic, MicOff, Maximize2, Minimize2 } from "lucide-react";
+import { Loader2, Plus, RotateCcw, Sparkles, Check, X, Mic, MicOff, Maximize2, Minimize2, Key } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useUI } from "@/components/ui-provider";
 import { cn } from "@/lib/utils";
+import { useApiKey } from "@/components/api-key-provider";
+import { ApiKeyModal } from "@/components/api-key-modal";
 
 
 export function BoardClient() {
   const { isFullscreen, toggleFullscreen } = useUI();
+  const { apiKey, hasKey, isLoaded } = useApiKey();
+  const [showApiKeyModal, setShowApiKeyModal] = useState(false);
   const [intent, setIntent] = useState("");
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -88,7 +92,10 @@ export function BoardClient() {
 
       const apiResponse = await fetch("/api/complete-diagram", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(apiKey ? { "x-gemini-api-key": apiKey } : {}),
+        },
         body: JSON.stringify({
           prompt: promptText,
           image_data: base64Image,
@@ -97,6 +104,10 @@ export function BoardClient() {
 
       if (!apiResponse.ok) {
         const errorData = await apiResponse.json();
+        if (errorData.error === "NO_API_KEY") {
+          setShowApiKeyModal(true);
+          throw new Error("Please set up your Gemini API key to use AI features.");
+        }
         throw new Error(errorData.error || "Failed to get AI suggestion");
       }
 
@@ -221,6 +232,59 @@ export function BoardClient() {
 
   if (!isMounted) return null;
 
+  // Show API key setup if key not loaded yet or missing
+  if (isLoaded && !hasKey) {
+    return (
+      <div className="relative w-full h-screen bg-[#faf9f5] flex flex-col items-center justify-center gap-6 overflow-hidden">
+        {/* Dot grid background */}
+        <svg className="absolute inset-0 w-full h-full opacity-30" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="dot-grid" width="28" height="28" patternUnits="userSpaceOnUse">
+              <circle cx="1.5" cy="1.5" r="1.5" fill="#e0dfd7" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#dot-grid)" />
+        </svg>
+
+        <div className="relative z-10 flex flex-col items-center gap-6 text-center max-w-md px-6">
+          <div className="w-20 h-20 bg-chalk-purple-light border-[3px] border-chalk-border rounded-3xl flex items-center justify-center shadow-[5px_5px_0px_0px_var(--chalk-border)]">
+            <Key className="w-9 h-9 text-chalk-purple stroke-[1.5]" />
+          </div>
+          <div>
+            <h2 className="font-sketch text-3xl font-black text-chalk-ink mb-2">Almost there!</h2>
+            <p className="text-chalk-gray font-medium leading-relaxed">
+              Chalk AI needs your <strong className="text-chalk-ink">Gemini API key</strong> to power AI diagram generation. Your key is stored locally and never shared.
+            </p>
+          </div>
+          <button
+            onClick={() => setShowApiKeyModal(true)}
+            className="inline-flex items-center gap-2.5 px-8 py-4 bg-chalk-ink text-white font-bold rounded-2xl border-2 border-chalk-ink
+                       shadow-[5px_5px_0px_0px_var(--chalk-purple)] hover:shadow-[2px_2px_0px_0px_var(--chalk-purple)]
+                       hover:-translate-y-0.5 active:translate-y-0 active:shadow-none
+                       transition-all duration-150"
+          >
+            <Key className="w-4 h-4 stroke-[2.5]" />
+            Connect Gemini API Key
+          </button>
+          <a
+            href="https://aistudio.google.com/app/apikey"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-chalk-gray hover:text-chalk-purple transition-colors font-medium"
+          >
+            Get a free key at Google AI Studio →
+          </a>
+        </div>
+
+        <ApiKeyModal
+          isOpen={showApiKeyModal}
+          onClose={() => setShowApiKeyModal(false)}
+          required={!hasKey}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className={cn(
       "relative w-full bg-background overflow-hidden font-sans transition-all duration-500",
@@ -288,6 +352,17 @@ export function BoardClient() {
               title={isListening ? "Stop listening" : "Start voice input"}
             >
               {isListening ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
+            </Button>
+
+          {/* API Key Settings */}
+            <Button
+              onClick={() => setShowApiKeyModal(true)}
+              variant="ghost"
+              size="icon"
+              className="h-10 w-10 shrink-0 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              title="Gemini API Key Settings"
+            >
+              <Key className="h-4 w-4" />
             </Button>
 
             {/* Fullscreen Button */}
@@ -405,6 +480,13 @@ export function BoardClient() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* API Key Modal */}
+      <ApiKeyModal
+        isOpen={showApiKeyModal}
+        onClose={() => setShowApiKeyModal(false)}
+        required={false}
+      />
     </div>
   );
 }

@@ -7,14 +7,19 @@ export const maxDuration = 60;
 
 export async function POST(request: NextRequest) {
   try {
-    // Server-side only API key (no NEXT_PUBLIC prefix)
-    const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+    // Prefer user-provided key from header, fall back to server env var
+    const userKey = request.headers.get("x-gemini-api-key");
+    const apiKey = userKey?.trim() || process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+
     if (!apiKey) {
       return NextResponse.json(
-        { error: "Missing GOOGLE_GENERATIVE_AI_API_KEY" },
-        { status: 500 }
+        { error: "NO_API_KEY", message: "No Gemini API key configured. Please add your API key in the board settings." },
+        { status: 401 }
       );
     }
+
+    // Inject the key into the environment for the @ai-sdk/google provider
+    process.env.GOOGLE_GENERATIVE_AI_API_KEY = apiKey;
 
     const { prompt, image_data } = (await request.json()) as {
       prompt: string;
