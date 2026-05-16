@@ -9,6 +9,7 @@ import {
   GraduationCap,
   ArrowRight,
 } from "lucide-react";
+import { DecorativeIcon } from "./decorative-icon";
 
 const steps = [
   {
@@ -39,7 +40,16 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="px-[5vw] py-24 bg-[#faf9f5] border-t border-b border-chalk-border/30 overflow-hidden">
+    <section className="relative px-[5vw] py-24 bg-[#faf9f5] border-t border-b border-chalk-border/30 overflow-hidden">
+      {/* Decorative Icons */}
+      <DecorativeIcon 
+        src="/landing/icons8-hourglass-100.png" 
+        alt="Hourglass" 
+        className="bottom-10 right-[5%]" 
+        rotate={10} 
+        size={90} 
+      
+      />
       <div className="max-w-[1200px] mx-auto">
         {/* SECTION HEADER */}
         <div className="text-center mb-20">

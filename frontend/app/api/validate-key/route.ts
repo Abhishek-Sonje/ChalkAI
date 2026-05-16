@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
     // Make a real but minimal call to Gemini to validate the key
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${api_key}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${api_key}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

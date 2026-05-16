@@ -5,12 +5,21 @@ import Link from "next/link";
 import { FadeIn } from "./fade-in";
 import { LogoIcon, ArrowRightIcon } from "./icons";
 import { SignInButton, SignUpButton, useAuth } from "@clerk/nextjs";
+import { DecorativeIcon } from "./decorative-icon";
 
 export function CTA() {
   const { isSignedIn } = useAuth();
 
   return (
-    <section className="py-20 px-[5vw]">
+    <section className="relative py-20 px-[5vw]">
+      {/* Decorative Icons */}
+      <DecorativeIcon 
+        src="/landing/icons8-cloud-100.png" 
+        alt="Cloud" 
+        className="top-0 right-[15%]" 
+        rotate={10} 
+        size={80} 
+      />
       <div className="max-w-[1400px] mx-auto">
         <FadeIn>
           <div className="relative bg-chalk-ink rounded-3xl p-10 md:p-14 flex flex-col md:flex-row items-center justify-between gap-8 overflow-hidden">
