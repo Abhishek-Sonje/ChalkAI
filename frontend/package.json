@@ -12,6 +12,7 @@
     "@ai-sdk/anthropic": "^3.0.1",
     "@ai-sdk/google": "^3.0.1",
     "@ai-sdk/openai": "^3.0.1",
+    "@clerk/nextjs": "^7.3.5",
     "@tiptap/core": "^3.6.2",
     "@tiptap/extension-list": "^3.6.2",
     "@tiptap/pm": "^3.6.2",
