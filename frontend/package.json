@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && cp -r .next/static .next/standalone/frontend/.next/static && cp -r public .next/standalone/frontend/public",
+    "build": "next build",
     "start": "node .next/standalone/frontend/server.js",
     "lint": "eslint"
   },
@@ -21,6 +21,7 @@
     "@tldraw/tldraw": "^4.2.1",
     "@tldraw/utils": "^4.2.1",
     "ai": "^6.0.3",
+    "axios": "^1.19.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.26",
