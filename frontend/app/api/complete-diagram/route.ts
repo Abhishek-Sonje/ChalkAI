@@ -7,9 +7,11 @@ export const maxDuration = 60;
 
 export async function POST(request: NextRequest) {
   try {
+
     // Prefer user-provided key from header, fall back to server env var
     const userKey = request.headers.get("x-gemini-api-key");
     const apiKey = userKey?.trim() || process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+
 
     if (!apiKey) {
       return NextResponse.json(
