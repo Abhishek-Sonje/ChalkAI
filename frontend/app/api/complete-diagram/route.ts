@@ -7,7 +7,7 @@ export const maxDuration = 60;
 
 export async function POST(request: NextRequest) {
   try {
-    // Server-side only API key (no NEXT_PUBLIC prefix)
+   
     const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
