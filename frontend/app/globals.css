@@ -1,19 +1,26 @@
 @import "tailwindcss";
 
+
+
 :root {
-  /* Minimal Monochrome Palette */
-  --background: #ffffff;
-  --foreground: #000000;
+  --background: #fafaf7;
+  --foreground: #1a1a1a;
   
-  /* Modern Accents */
-  --muted: #f4f4f5;
-  --muted-foreground: #737373;
-  --border: #eaeaea;
-  --input: #f4f4f5;
-  --primary: #000000;
-  --primary-foreground: #ffffff;
+  /* Chalk AI Design Tokens */
+  --chalk-ink: #1a1a1a;
+  --chalk-ink-soft: #3d3d3d;
+  --chalk-gray: #888;
+  --chalk-bg: #fafaf7;
+  --chalk-white: #ffffff;
+  --chalk-purple: #7b5ea7;
+  --chalk-purple-light: #ede8f5;
+  --chalk-blue-soft: #e8eef8;
+  --chalk-border: #d0cfc7;
+  --chalk-border-soft: #e8e7e0;
   
-  --ring: #000000;
+  --font-sketch: var(--font-sketch);
+  --font-body: var(--font-body);
+  
   --radius: 0.75rem;
 }
 
@@ -28,8 +35,27 @@
   --color-primary-foreground: var(--primary-foreground);
   --color-ring: var(--ring);
   --radius-lg: var(--radius);
-  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --color-chalk-ink: var(--chalk-ink);
+  --color-chalk-ink-soft: var(--chalk-ink-soft);
+  --color-chalk-gray: var(--chalk-gray);
+  --color-chalk-bg: var(--chalk-bg);
+  --color-chalk-white: var(--chalk-white);
+  --color-chalk-purple: var(--chalk-purple);
+  --color-chalk-purple-light: var(--chalk-purple-light);
+  --color-chalk-blue-soft: var(--chalk-blue-soft);
+  --color-chalk-border: var(--chalk-border);
+  --color-chalk-border-soft: var(--chalk-border-soft);
+
+  --font-sans: var(--font-body), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), monospace;
+  --font-sketch: var(--font-sketch);
+  
+  --animate-marquee: marquee 28s linear infinite;
+  
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
 }
 
 body {
