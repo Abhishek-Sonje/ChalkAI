@@ -46,7 +46,9 @@ export function VideoModal({ isOpen, onClose, videoUrl }: VideoModalProps) {
                 <iframe
                   src={videoUrl}
                   className="w-full h-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  title="Chalk AI demo"
                   allowFullScreen
                 />
               ) : (

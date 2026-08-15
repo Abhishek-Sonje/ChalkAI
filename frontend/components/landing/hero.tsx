@@ -148,7 +148,11 @@ export function Hero() {
 
   return (
     <section className="relative min-h-[calc(100dvh-76px)] grid grid-cols-1 lg:grid-cols-2 items-center gap-12 px-[5vw] py-12 mx-auto overflow-hidden bg-[#faf9f5]">
-      <VideoModal isOpen={isVideoOpen} onClose={() => setIsVideoOpen(false)} />
+      <VideoModal
+        isOpen={isVideoOpen}
+        onClose={() => setIsVideoOpen(false)}
+        videoUrl="https://player.vimeo.com/video/1218572593?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1"
+      />
 
       {/* Decorative Icons */}
       <DecorativeIcon 
