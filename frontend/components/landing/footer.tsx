@@ -54,55 +54,9 @@ export function Footer() {
               <span>Star on GitHub</span>
             </a>
 
-            {/* VERTICAL DIVIDER LINK SHIM */}
-            <span className="hidden sm:inline text-white/10 font-light">|</span>
 
-            {/* TARGET SOCIAL LINKS BUNDLE */}
-            <div className="flex items-center gap-3">
-              <a
-                href="https://www.linkedin.com/in/abhishek-sonje-83a333209/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 bg-white/5 border-2 border-white/10 rounded-xl flex items-center justify-center text-white/60 
-                           hover:text-chalk-purple hover:bg-[#f1ebfa] hover:border-white/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
-                title="Abhishek on LinkedIn"
-              >
-                <Linkedin className="w-4 h-4 stroke-[2]" />
-              </a>
-
-              <a
-                href="https://www.linkedin.com/in/jaydeepwagaskar/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 bg-white/5 border-2 border-white/10 rounded-xl flex items-center justify-center text-white/60 
-                           hover:text-chalk-purple hover:bg-[#f1ebfa] hover:border-white/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
-                title="Jaydeep on LinkedIn"
-              >
-                <Linkedin className="w-4 h-4 stroke-[2]" />
-              </a>
-
-              <a
-                href="https://x.com/Abhi_SDev"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 bg-white/5 border-2 border-white/10 rounded-xl flex items-center justify-center text-white/60 
-                           hover:text-chalk-purple hover:bg-[#f1ebfa] hover:border-white/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
-                title="Abhishek on X"
-              >
-                <Twitter className="w-4 h-4 fill-current stroke-none" />
-              </a>
-
-              <a
-                href="https://x.com/jayydeeppp"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 bg-white/5 border-2 border-white/10 rounded-xl flex items-center justify-center text-white/60 
-                           hover:text-chalk-purple hover:bg-[#f1ebfa] hover:border-white/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
-                title="Jaydeep on X"
-              >
-                <Twitter className="w-4 h-4 fill-current stroke-none" />
-              </a>
-            </div>
+          
+            
           </div>
         </div>
 
