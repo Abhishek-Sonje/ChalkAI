@@ -52,7 +52,7 @@ export function HowItWorks() {
       />
       <div className="max-w-[1200px] mx-auto">
         {/* SECTION HEADER */}
-        <div className="text-center mb-20">
+        <div className="text-center mb-14">
           <FadeIn>
             <h2 className="font-sketch text-3xl md:text-5xl text-chalk-ink relative inline-block">
               How Chalk AI works
@@ -60,6 +60,22 @@ export function HowItWorks() {
             </h2>
           </FadeIn>
         </div>
+
+        <FadeIn delay={80} className="max-w-4xl mx-auto mb-20">
+          <div className="relative rounded-3xl border-[3px] border-chalk-border bg-white overflow-hidden shadow-[8px_8px_0px_0px_var(--chalk-border)]">
+            <div className="relative w-full pt-[75%]">
+              <iframe
+                src="https://player.vimeo.com/video/1218572593?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1"
+                className="absolute inset-0 h-full w-full"
+                frameBorder={0}
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                title="Chalk AI demo"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </FadeIn>
 
         {/* PROCESS FLOW WRAPPER */}
         <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-6">
