@@ -191,7 +191,11 @@ export function Whiteboard({
 
   return (
     <div className="relative w-full h-full">
-      <Tldraw onMount={handleMount} className="w-full h-full" />
+      <Tldraw
+        onMount={handleMount}
+        className="w-full h-full"
+        licenseKey={process.env.NEXT_PUBLIC_TLDRAW_LICENSE_KEY}
+      />
     </div>
   );
 }
