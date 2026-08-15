@@ -12,7 +12,7 @@ import { useApiKey } from "@/components/api-key-provider";
 import { ApiKeyModal } from "@/components/api-key-modal";
 
 
-export function BoardClient() {
+export function BoardClient({ licenseKey }: { licenseKey?: string }) {
   const { isFullscreen, toggleFullscreen } = useUI();
   const { apiKey, hasKey, isLoaded } = useApiKey();
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
@@ -286,16 +286,14 @@ export function BoardClient() {
   }
 
   return (
-    <div className={cn(
-      "relative w-full bg-background overflow-hidden font-sans transition-all duration-500",
-      isFullscreen ? "h-screen" : "h-[calc(100vh-64px)]"
-    )}>
+    <div className="relative w-full h-dvh bg-background overflow-hidden font-sans">
       <div className="absolute inset-0 z-0">
         <Whiteboard
           onExportReady={handleExportReady}
           generatedImage={generatedImage}
           onAcceptSuggestion={handleAcceptSuggestion}
           onDrawingActivity={handleDrawingActivity}
+          licenseKey={licenseKey}
         />
       </div>
 

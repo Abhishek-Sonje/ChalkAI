@@ -3,12 +3,14 @@
 import { useCallback, useEffect, useRef } from "react";
 import { Tldraw, Editor, AssetRecordType, createShapeId, TLShapeId, Box } from "@tldraw/tldraw";
 import "@tldraw/tldraw/tldraw.css";
+import { getTldrawLicenseKey } from "@/lib/tldraw-license";
 
 interface WhiteboardProps {
   onExportReady: (exportFn: () => Promise<string | null>) => void;
   generatedImage: string | null;
   onAcceptSuggestion: () => void;
   onDrawingActivity?: () => void;
+  licenseKey?: string;
 }
 
 // Context to track what was exported (for targeted replacement)
@@ -22,6 +24,7 @@ export function Whiteboard({
   generatedImage,
   onAcceptSuggestion,
   onDrawingActivity,
+  licenseKey,
 }: WhiteboardProps) {
   const editorRef = useRef<Editor | null>(null);
   const exportContextRef = useRef<ExportContext | null>(null);
@@ -190,11 +193,10 @@ export function Whiteboard({
   }, [generatedImage, onAcceptSuggestion]);
 
   return (
-    <div className="relative w-full h-full">
+    <div className="absolute inset-0">
       <Tldraw
         onMount={handleMount}
-        className="w-full h-full"
-        licenseKey={process.env.NEXT_PUBLIC_TLDRAW_LICENSE_KEY}
+        licenseKey={getTldrawLicenseKey(licenseKey)}
       />
     </div>
   );
