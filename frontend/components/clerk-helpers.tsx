@@ -1,4 +1,6 @@
-import { auth } from "@clerk/nextjs/server";
+"use client";
+
+import { useAuth } from "@clerk/nextjs";
 import { ReactNode } from "react";
 
 interface ShowProps {
@@ -7,11 +9,17 @@ interface ShowProps {
 }
 
 /**
- * A helper component to conditionally show content based on authentication state.
- * Uses the latest Clerk auth() API.
+ * Conditionally render children from auth state without calling server `auth()`.
+ * Using `useAuth()` keeps the root layout working on 404s and unmatched routes
+ * where Clerk middleware is not attached.
  */
-export async function Show({ when, children }: ShowProps) {
-  const { userId } = await auth();
+export function Show({ when, children }: ShowProps) {
+  const { userId, isLoaded } = useAuth();
+
+  if (!isLoaded) {
+    return null;
+  }
+
   const isSignedIn = !!userId;
 
   if (when === "signed-in" && isSignedIn) {

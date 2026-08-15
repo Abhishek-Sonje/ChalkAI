@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Kalam, Inter } from "next/font/google";
 import Link from "next/link";
 import { ClerkProvider, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import { Show } from "@/components/clerk-helpers";
@@ -7,7 +7,6 @@ import { UIProvider } from "@/components/ui-provider";
 import { ApiKeyProvider } from "@/components/api-key-provider";
 import { Header } from "@/components/header";
 import { LayoutWrapper } from "@/components/layout-wrapper";
-import { Caveat, Nunito, Kalam, Inter } from "next/font/google";
 import "./globals.css";
 
 const kalam = Kalam({
@@ -43,6 +42,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://chalk-ai.vercel.app"),
   title: "ChalkAI - Turn Sketches into Professional Diagrams",
   description:
     "An intelligent whiteboard that uses Google Gemini AI to transform hand-drawn sketches into clean, publication-ready diagrams instantly.",

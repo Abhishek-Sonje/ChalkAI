@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import "../node_modules/tailwindcss/index.css";
 
 
 
@@ -17,9 +17,14 @@
   --chalk-blue-soft: #e8eef8;
   --chalk-border: #d0cfc7;
   --chalk-border-soft: #e8e7e0;
-  
-  --font-sketch: var(--font-sketch);
-  --font-body: var(--font-body);
+
+  --muted: #f4f3ee;
+  --muted-foreground: #888888;
+  --border: #d0cfc7;
+  --input: #d0cfc7;
+  --primary: #1a1a1a;
+  --primary-foreground: #ffffff;
+  --ring: #7b5ea7;
   
   --radius: 0.75rem;
 }
