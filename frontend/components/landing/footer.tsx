@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-import { Github, Linkedin, Twitter } from "lucide-react";
-import { LogoIcon } from "./icons";
+import { Github } from "lucide-react";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -65,7 +64,7 @@ export function Footer() {
 
         {/* BOTTOM METADATA LAYER */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span className="text-[11px] md:text-xs text-white/40 font-medium tracking-wide">
+          <span className="text-[11px] md:text-xs text-white/40 font-medium tracking-wide text-center sm:text-left">
             © {currentYear} Chalk AI. Handcrafted with care. All rights
             reserved.
           </span>

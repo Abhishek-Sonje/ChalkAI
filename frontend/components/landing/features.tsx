@@ -103,7 +103,7 @@ function SketchedCardFrame() {
 
 export function Features() {
   return (
-    <section className="relative px-[5vw] py-24 max-w-[1400px] mx-auto text-center bg-[#faf9f5]">
+    <section className="relative px-[5vw] py-16 sm:py-24 max-w-[1400px] mx-auto text-center bg-[#faf9f5]">
       {/* Decorative Icons */}
       <DecorativeIcon 
         src="/landing/icons8-note-100.png" 
@@ -123,7 +123,7 @@ export function Features() {
       {/* HEADER SECTION WITH SKETCH UNDERLINE ATTRIBUTES */}
       <div className="mb-16">
         <FadeIn>
-          <h2 className="font-sketch text-3xl md:text-5xl text-chalk-ink tracking-tight">
+            <h2 className="font-sketch text-3xl md:text-5xl text-chalk-ink tracking-tight px-2">
             <SketchMark flip/>
             <span>
             Everything you need on one{" "}

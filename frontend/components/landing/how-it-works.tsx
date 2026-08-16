@@ -40,7 +40,7 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="relative px-[5vw] py-24 bg-[#faf9f5] border-t border-b border-chalk-border/30 overflow-hidden">
+    <section className="relative px-[5vw] py-16 sm:py-24 bg-[#faf9f5] border-t border-b border-chalk-border/30 overflow-hidden">
       {/* Decorative Icons */}
       <DecorativeIcon 
         src="/landing/icons8-hourglass-100.png" 

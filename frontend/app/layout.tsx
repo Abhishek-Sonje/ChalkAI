@@ -7,6 +7,7 @@ import { ApiKeyProvider } from "@/components/api-key-provider";
 import { Header } from "@/components/header";
 import { LayoutWrapper } from "@/components/layout-wrapper";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next"
 
 const kalam = Kalam({
   subsets: ["latin"],
@@ -104,6 +105,7 @@ export default function RootLayout({
           </UIProvider>
           </ApiKeyProvider>
         </AuthProvider>
+        <Analytics />
       </body>
     </html>
   );

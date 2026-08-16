@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { FadeIn } from "./fade-in";
 import { Star } from "lucide-react";
 import { DecorativeIcon } from "./decorative-icon";
@@ -95,7 +95,7 @@ export function Testimonials() {
   const reviewSet = [...reviews, ...reviews, ...reviews];
 
   return (
-    <section className="relative py-24 px-[5vw] bg-[#faf9f5] border-b border-chalk-border/20 overflow-hidden">
+    <section className="relative py-16 sm:py-24 px-[5vw] bg-[#faf9f5] border-b border-chalk-border/20 overflow-hidden">
       
       {/* Decorative Assets */}
       <DecorativeIcon 
@@ -110,7 +110,7 @@ export function Testimonials() {
         
         {/* HERO FEATURED TESTIMONIAL VIEW SYSTEM */}
         <FadeIn>
-          <div className="group relative p-8 md:p-12 mb-28 transition-transform duration-200 hover:-translate-y-1">
+          <div className="group relative p-5 sm:p-8 md:p-12 mb-16 sm:mb-28 transition-transform duration-200 hover:-translate-y-1">
             
             {/* Structural Hand-drawn Backdrop Core */}
             <SketchedPaperFrame />
@@ -122,7 +122,7 @@ export function Testimonials() {
                   <span className="text-4xl text-chalk-purple font-serif inline-block translate-y-2 mr-1">
                     “
                   </span>
-                  Chalk AI has changed the way I teach. It's like having an{" "}
+                  Chalk AI has changed the way I teach. It&apos;s like having an{" "}
                   <span className="text-chalk-purple underline decoration-wavy underline-offset-4 decoration-chalk-purple/40">
                     intelligent co-teacher
                   </span>{" "}
@@ -156,7 +156,7 @@ export function Testimonials() {
         {/* MARQUEE ANCHOR HEADINGS */}
         <div className="text-center mb-16">
           <FadeIn>
-            <h2 className="font-sketch text-2xl md:text-5xl text-chalk-ink flex items-center justify-center gap-3 tracking-tight">
+            <h2 className="font-sketch text-2xl md:text-5xl text-chalk-ink flex flex-wrap items-center justify-center gap-2 sm:gap-3 tracking-tight px-2">
               <span className="text-chalk-purple animate-pulse text-lg md:text-xl select-none">
                 ✦
               </span>
@@ -171,15 +171,15 @@ export function Testimonials() {
         {/* INFINITE SMOOTH MARQUEE INTERFACE TRACK */}
         <div className="relative overflow-hidden w-full select-none py-6">
           {/* Feathered Mask Shims */}
-          <div className="absolute top-0 bottom-0 left-0 w-24 md:w-44 z-20 bg-gradient-to-r from-[#faf9f5] via-[#faf9f5]/40 to-transparent pointer-events-none" />
-          <div className="absolute top-0 bottom-0 right-0 w-24 md:w-44 z-20 bg-gradient-to-l from-[#faf9f5] via-[#faf9f5]/40 to-transparent pointer-events-none" />
+          <div className="absolute top-0 bottom-0 left-0 w-10 sm:w-24 md:w-44 z-20 bg-gradient-to-r from-[#faf9f5] via-[#faf9f5]/40 to-transparent pointer-events-none" />
+          <div className="absolute top-0 bottom-0 right-0 w-10 sm:w-24 md:w-44 z-20 bg-gradient-to-l from-[#faf9f5] via-[#faf9f5]/40 to-transparent pointer-events-none" />
 
           {/* Running Tape Track Component */}
           <div className="flex gap-8 w-max animate-marquee will-change-transform hover:[animation-play-state:paused] transition-all">
             {reviewSet.map((r, i) => (
               <div
                 key={i}
-                className="group relative w-[310px] shrink-0 p-7 text-left transition-transform duration-200 hover:-translate-y-1 hover:rotate-1 flex flex-col justify-between min-h-[240px]"
+                className="group relative w-[min(310px,calc(100vw-3rem))] shrink-0 p-7 text-left transition-transform duration-200 hover:-translate-y-1 hover:rotate-1 flex flex-col justify-between min-h-[240px]"
               >
                 {/* Structural Paper Frame for each item in the tape slider */}
                 <SketchedPaperFrame />

@@ -6,7 +6,8 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
-import { signInWithGoogle, signOutAction } from "@/app/actions/auth";
+import { signInWithGoogle } from "@/app/actions/auth";
+import { useIsClient } from "@/lib/use-is-client";
 
 function GoogleMark({ className }: { className?: string }) {
   return (
@@ -32,7 +33,7 @@ function GoogleMark({ className }: { className?: string }) {
 }
 
 const headerButtonClass =
-  "px-5 py-2 text-sm font-semibold bg-chalk-ink text-white rounded-lg hover:-translate-y-0.5 hover:shadow-lg transition-all active:scale-95";
+  "px-3 sm:px-5 py-2 text-sm font-semibold bg-chalk-ink text-white rounded-lg hover:-translate-y-0.5 hover:shadow-lg transition-all active:scale-95";
 
 export function GoogleSignInButton({
   children,
@@ -57,11 +58,7 @@ function SignInModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useIsClient();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -147,35 +144,33 @@ export function HeaderAuth() {
   }
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-2 sm:gap-4">
       <Link
-        href="/board"
-        className="text-sm font-semibold text-chalk-ink hover:text-chalk-purple transition-colors"
+        href="/boards"
+        className="text-sm font-semibold text-chalk-ink hover:text-chalk-purple transition-colors px-2 py-1"
       >
-        Board
+        Boards
       </Link>
-      <form action={signOutAction}>
-        <button
-          type="submit"
-          title="Sign out"
-          className="flex items-center gap-2 rounded-full border-2 border-chalk-border bg-white pl-1 pr-3 py-1 hover:border-chalk-purple transition-colors"
-        >
-          {session.user.image ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={session.user.image}
-              alt={session.user.name ?? "Account"}
-              className="w-7 h-7 rounded-full"
-              referrerPolicy="no-referrer"
-            />
-          ) : (
-            <span className="w-7 h-7 rounded-full bg-chalk-purple-light text-chalk-purple text-xs font-bold flex items-center justify-center">
-              {(session.user.name ?? "U").slice(0, 1)}
-            </span>
-          )}
-          <span className="text-xs font-semibold text-chalk-ink-soft">Sign out</span>
-        </button>
-      </form>
+      <Link
+        href="/account"
+        className="flex items-center gap-2 text-sm font-semibold text-chalk-ink hover:text-chalk-purple transition-colors"
+        aria-label="Account"
+      >
+        {session.user.image ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={session.user.image}
+            alt=""
+            className="w-8 h-8 rounded-full border-2 border-chalk-border"
+            referrerPolicy="no-referrer"
+          />
+        ) : (
+          <span className="w-8 h-8 rounded-full bg-chalk-purple-light text-chalk-purple text-xs font-bold flex items-center justify-center border-2 border-chalk-border">
+            {(session.user.name ?? "U").slice(0, 1)}
+          </span>
+        )}
+        <span className="hidden sm:inline">Account</span>
+      </Link>
     </div>
   );
 }

@@ -98,7 +98,7 @@ function FounderCard({ founder }: FounderCardProps) {
   const [imgError, setImgError] = useState(false);
 
   return (
-    <div className="group relative flex flex-col h-full sm:flex-row gap-6 p-8 md:p-10 transition-transform duration-200 hover:-translate-y-1">
+    <div className="group relative flex flex-col h-full sm:flex-row gap-6 p-6 sm:p-8 md:p-10 transition-transform duration-200 hover:-translate-y-1">
       {/* Hand-drawn Frame Asset with Paper Overlay */}
       <SketchedPaperFrame />
 
@@ -199,13 +199,13 @@ const SketchMark = ({ flip = false }: { flip?: boolean }) => (
 
 export function Founders() {
   return (
-    <section className="py-24 px-[5vw] bg-[#faf9f5] border-b border-chalk-border/20 overflow-hidden">
+    <section className="py-16 sm:py-24 px-[5vw] bg-[#faf9f5] border-b border-chalk-border/20 overflow-hidden">
       <div className="max-w-[1200px] mx-auto">
         {/* SECTION HEADER LAYOUT */}
         <div className="text-center mb-20">
           <FadeIn>
             <SketchMark flip/>
-            <h2 className="font-sketch text-3xl md:text-5xl font-normal text-chalk-ink relative inline-block tracking-tight">
+            <h2 className="font-sketch text-3xl md:text-5xl font-normal text-chalk-ink relative inline-block tracking-tight px-2">
               Created by students, for educators
               <span className="absolute left-0 bottom-[-6px] w-full h-[3px] bg-chalk-purple/30 rounded-full" />
             </h2>

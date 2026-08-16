@@ -4,6 +4,10 @@ import { NextResponse } from "next/server";
 export default auth((req) => {
   const { pathname } = req.nextUrl;
   const isProtected =
+    pathname === "/boards" ||
+    pathname.startsWith("/boards/") ||
+    pathname === "/account" ||
+    pathname.startsWith("/account/") ||
     pathname === "/board" ||
     pathname.startsWith("/board/") ||
     pathname === "/home" ||
@@ -15,5 +19,14 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ["/board/:path*", "/home/:path*"],
+  matcher: [
+    "/board",
+    "/board/:path*",
+    "/boards",
+    "/boards/:path*",
+    "/account",
+    "/account/:path*",
+    "/home",
+    "/home/:path*",
+  ],
 };

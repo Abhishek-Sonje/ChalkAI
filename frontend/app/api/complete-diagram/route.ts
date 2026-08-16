@@ -1,115 +1,73 @@
-import { google } from "@ai-sdk/google";
-import { generateText } from "ai";
 import { NextRequest, NextResponse } from "next/server";
+import { getSessionUser } from "@/lib/session";
+import { getDecryptedApiKeys } from "@/lib/user-api-keys";
+import { DEFAULT_IMAGE_MODEL_ID, getImageModel } from "@/lib/image-models";
+import { envKeysFor, generateDiagramImage } from "@/lib/image-generate";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
 export async function POST(request: NextRequest) {
   try {
-
-    // Prefer user-provided key from header, fall back to server env var
-    const userKey = request.headers.get("x-gemini-api-key");
-    const apiKey = userKey?.trim() || process.env.GOOGLE_GENERATIVE_AI_API_KEY;
-
-
-    if (!apiKey) {
-      return NextResponse.json(
-        { error: "NO_API_KEY", message: "No Gemini API key configured. Please add your API key in the board settings." },
-        { status: 401 }
-      );
-    }
-
-    // Inject the key into the environment for the @ai-sdk/google provider
-    process.env.GOOGLE_GENERATIVE_AI_API_KEY = apiKey;
-
-    const { prompt, image_data } = (await request.json()) as {
+    const { prompt, image_data, model } = (await request.json()) as {
       prompt: string;
       image_data?: string;
+      model?: string;
     };
 
     if (!prompt?.trim()) {
       return NextResponse.json({ error: "Missing prompt" }, { status: 400 });
     }
 
-    // Build message content
-    const content: Array<
-      | { type: "text"; text: string }
-      | { type: "image"; image: string }
-    > = [];
+    const modelDef = getImageModel(model || DEFAULT_IMAGE_MODEL_ID);
+    const sessionUser = await getSessionUser();
+    const accountKeys = sessionUser ? await getDecryptedApiKeys(sessionUser.id) : [];
+    const matching = accountKeys
+      .filter((entry) => entry.provider === modelDef.provider)
+      .map((entry) => entry.key);
+    const fallback = accountKeys
+      .filter((entry) => entry.provider !== modelDef.provider)
+      .map((entry) => entry.key);
+    const envKeys = envKeysFor(modelDef.provider);
 
-    // Add reference image if provided
-    if (image_data) {
-      const imageDataUrl = image_data.startsWith("data:")
-        ? image_data
-        : `data:image/png;base64,${image_data}`;
-      content.push({ type: "image", image: imageDataUrl });
+    const apiKeys = [...new Set([...matching, ...envKeys, ...fallback])];
+
+    if (!apiKeys.length) {
+      return NextResponse.json(
+        {
+          error: "NO_API_KEY",
+          message: `No API key configured for ${modelDef.provider}. Add one in the key settings.`,
+        },
+        { status: 401 }
+      );
     }
 
-    // Add text prompt
-    content.push({
-      type: "text",
-      text: `Generate a clean, high-quality, professional diagram as a PNG image based on the provided reference image and the user’s explanation.
+    let lastError: unknown = null;
+    for (const apiKey of apiKeys) {
+      try {
+        const image_data_out = await generateDiagramImage(
+          modelDef,
+          apiKey,
+          prompt,
+          image_data
+        );
+        return NextResponse.json({
+          image_data: image_data_out,
+          model: modelDef.id,
+        });
+      } catch (error) {
+        lastError = error;
+        console.warn(`Model ${modelDef.id} failed with a key, trying next…`, error);
+      }
+    }
 
-IMPORTANT INTERPRETATION RULE:
-- Treat the reference image as a rough sketch or visual hint, NOT as a final diagram.
-- You are allowed and expected to redraw, correct, and standardize shapes, proportions, and outlines to create a proper textbook-style diagram.
-
-Diagram guidelines:
-- Use a clean white background.
-- Replace all rough, hand-drawn, or uneven outlines with precise, smooth, and well-proportioned shapes.
-- Redraw objects using correct canonical forms (e.g., cylinders, boxes, arrows, tubes) even if the sketch is distorted or incomplete.
-- Do NOT trace the sketch. Reconstruct the diagram clearly and accurately.
-- Use consistent line thickness and clean geometry.
-- Use arrows and connectors to clearly show structure, flow, or relationships.
-- Include and clearly label all entities, components, and relationships mentioned in the user’s explanation.
-- If the sketch is ambiguous, resolve it into the most reasonable and standard diagram based on the explanation.
-
-Text handling:
-- Preserve any text or labels from the reference image exactly if they exist.
-- Add missing labels ONLY if they are clearly implied by the user’s explanation.
-
-Output requirements:
-- Output only the generated PNG image.
-- Do not include any text, explanations, or captions outside the image.
-
-User explanation:
-${prompt}
-`,
-    });
-
-    // Use generateText with image-capable Gemini model
-    const result = await generateText({
-      model: google("gemini-2.5-flash-image"),
-      messages: [{ role: "user", content }],
-    });
-
-    // Extract image from files array
-    const imageFile = result.files?.find((f) =>
-      f.mediaType.startsWith("image/")
+    return NextResponse.json(
+      {
+        error: "Failed to generate image",
+        details: lastError instanceof Error ? lastError.message : "All API keys failed",
+      },
+      { status: 500 }
     );
-
-    if (!imageFile) {
-      return NextResponse.json(
-        { error: "No image returned by model" },
-        { status: 500 }
-      );
-    }
-
-    // Use base64 property directly if available, otherwise convert uint8Array
-    const base64Image = imageFile.base64 ?? 
-      (imageFile.uint8Array ? Buffer.from(imageFile.uint8Array).toString("base64") : null);
-
-    if (!base64Image) {
-      return NextResponse.json(
-        { error: "Could not extract image data" },
-        { status: 500 }
-      );
-    }
-
-    return NextResponse.json({
-      image_data: base64Image,
-    });
   } catch (error) {
     console.error("API error:", error);
     return NextResponse.json(
