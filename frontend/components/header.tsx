@@ -49,9 +49,7 @@ export function Header({ children }: HeaderProps) {
           className="font-sketch text-xl font-bold flex items-center gap-3 text-chalk-ink group relative"
         >
           {/* Stylized Modern Pencil Container */}
-          <div className="w-8 h-8 bg-chalk-purple-light border-2 border-chalk-border rounded-xl flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-200 shadow-[1.5px_1.5px_0px_0px_var(--chalk-border)]">
-            <Pencil className="w-4 h-4 text-chalk-purple stroke-[2.5]" />
-          </div>
+         
           <span className="relative tracking-tight">
             Chalk AI
             <span className="absolute left-0 bottom-[-1px] w-0 h-[2px] bg-chalk-purple transition-all duration-300 group-hover:w-full rounded-full" />

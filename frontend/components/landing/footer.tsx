@@ -31,7 +31,7 @@ export function Footer() {
           {/* BRAND SIGNATURE IDENTIFIER */}
           <div className="flex flex-col gap-1.5">
             <div className="font-sketch text-2xl font-bold flex items-center gap-2.5 text-white tracking-tight">
-              <LogoIcon />
+          
               <span>Chalk AI</span>
             </div>
             <p className="text-xs md:text-sm text-white/50 max-w-xs font-medium leading-relaxed">

@@ -28,9 +28,7 @@ export function CTA() {
             <div className="absolute -bottom-14 left-48 w-60 h-60 rounded-full border-2 border-white/5" />
             
             <div className="relative z-10 text-center md:text-left">
-              <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center mb-4 mx-auto md:mx-0">
-                <LogoIcon />
-              </div>
+              
               <h2 className="font-sketch text-2xl md:text-3xl font-bold text-white mb-2">
                 Ready to transform the way you teach?
               </h2>
