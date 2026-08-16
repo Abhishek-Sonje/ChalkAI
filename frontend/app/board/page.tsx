@@ -1,16 +1,12 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { BoardClient } from "@/components/board-client";
 import { getTldrawLicenseKey } from "@/lib/tldraw-license";
 
-/**
- * BoardPage is a server component that handles authentication checks
- * before rendering the whiteboard client application.
- */
 export default async function BoardPage() {
-  const { userId } = await auth();
+  const session = await auth();
 
-  if (!userId) {
+  if (!session?.user) {
     redirect("/");
   }
 

@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Kalam, Inter } from "next/font/google";
-import Link from "next/link";
-import { ClerkProvider, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
-import { Show } from "@/components/clerk-helpers";
+import { AuthProvider } from "@/components/auth-provider";
+import { HeaderAuth } from "@/components/auth-buttons";
 import { UIProvider } from "@/components/ui-provider";
 import { ApiKeyProvider } from "@/components/api-key-provider";
 import { Header } from "@/components/header";
@@ -93,45 +92,18 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable}  ${inter.variable} ${kalam.variable} antialiased`}
       >
-        <ClerkProvider
-          publishableKey={
-            process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
-            process.env.CLERK_PUBLISHABLE_KEY
-          }
-        >
+        <AuthProvider>
           <ApiKeyProvider>
           <UIProvider>
             <Header>
-              <Show when="signed-out">
-                <SignInButton mode="modal">
-                  <button className="text-sm font-medium text-chalk-ink-soft hover:text-chalk-ink transition-colors">
-                    Log in
-                  </button>
-                </SignInButton>
-                <SignUpButton mode="modal">
-                  <button className="px-5 py-2 text-sm font-semibold bg-chalk-ink text-white rounded-lg hover:-translate-y-0.5 hover:shadow-lg transition-all active:scale-95">
-                    Get Started
-                  </button>
-                </SignUpButton>
-              </Show>
-              <Show when="signed-in">
-                <div className="flex items-center gap-4">
-                  <Link
-                    href="/board"
-                    className="text-sm font-semibold text-chalk-ink hover:text-chalk-purple transition-colors"
-                  >
-                    Board
-                  </Link>
-                  <UserButton appearance={{ elements: { userButtonAvatarBox: "w-9 h-9" } }} />
-                </div>
-              </Show>
+              <HeaderAuth />
             </Header>
             <LayoutWrapper>
               {children}
             </LayoutWrapper>
           </UIProvider>
           </ApiKeyProvider>
-        </ClerkProvider>
+        </AuthProvider>
       </body>
     </html>
   );

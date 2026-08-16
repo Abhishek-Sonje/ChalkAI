@@ -4,11 +4,11 @@ import React from "react";
 import Link from "next/link";
 import { FadeIn } from "./fade-in";
 import { LogoIcon, ArrowRightIcon } from "./icons";
-import { SignInButton, SignUpButton, useAuth } from "@clerk/nextjs";
+import { GoogleSignInButton, useIsSignedIn } from "@/components/auth-buttons";
 import { DecorativeIcon } from "./decorative-icon";
 
 export function CTA() {
-  const { isSignedIn } = useAuth();
+  const { isSignedIn } = useIsSignedIn();
 
   return (
     <section className="relative py-20 px-[5vw]">
@@ -40,12 +40,10 @@ export function CTA() {
             </div>
             
             {!isSignedIn ? (
-              <SignUpButton mode="modal">
-                <button className="relative z-10 shrink-0 flex items-center gap-2 px-7 py-3.5 bg-white text-chalk-ink font-bold rounded-xl hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(255,255,255,0.2)] active:scale-95 transition-all duration-300">
-                  Get Started
-                  <ArrowRightIcon />
-                </button>
-              </SignUpButton>
+              <GoogleSignInButton className="relative z-10 shrink-0 flex items-center gap-2 px-7 py-3.5 bg-white text-chalk-ink font-bold rounded-xl hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(255,255,255,0.2)] active:scale-95 transition-all duration-300">
+                Get Started
+                <ArrowRightIcon />
+              </GoogleSignInButton>
             ) : (
               <Link href="/board">
                 <button className="relative z-10 shrink-0 flex items-center gap-2 px-7 py-3.5 bg-white text-chalk-ink font-bold rounded-xl hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(255,255,255,0.2)] active:scale-95 transition-all duration-300">

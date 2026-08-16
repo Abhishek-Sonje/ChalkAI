@@ -7,7 +7,7 @@ import { FadeIn } from "./fade-in";
 import { PlayIcon, SparkleIcon } from "./icons";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { VideoModal } from "./video-modal";
-import { SignInButton, SignUpButton, useAuth } from "@clerk/nextjs";
+import { GoogleSignInButton, useIsSignedIn } from "@/components/auth-buttons";
 import { DecorativeIcon } from "./decorative-icon";
 
 const SketchMark = ({ flip = false }: { flip?: boolean }) => (
@@ -144,7 +144,7 @@ const TriangleSketch = () => (
    ========================= */
 export function Hero() {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
-  const { isSignedIn } = useAuth();
+  const { isSignedIn } = useIsSignedIn();
 
   return (
     <section className="relative min-h-[calc(100dvh-76px)] grid grid-cols-1 lg:grid-cols-2 items-center gap-12 px-[5vw] py-12 mx-auto overflow-hidden bg-[#faf9f5]">
@@ -208,17 +208,15 @@ export function Hero() {
           <div className="flex flex-wrap items-center gap-5">
             {/* Main Action Call */}
             {!isSignedIn ? (
-              <SignUpButton mode="modal">
-                <button
-                  className="group inline-flex items-center gap-2 px-8 py-4 bg-chalk-ink text-white font-bold rounded-2xl border-2 border-chalk-ink
+              <GoogleSignInButton
+                className="group inline-flex items-center gap-2 px-8 py-4 bg-chalk-ink text-white font-bold rounded-2xl border-2 border-chalk-ink
                                 shadow-[4px_4px_0px_0px_var(--chalk-purple)] hover:shadow-[2px_2px_0px_0px_var(--chalk-purple)]
                                 hover:-translate-y-0.5 active:translate-y-0 active:shadow-[0px_0px_0px_0px_transparent]
                                 transition-all duration-150"
-                >
-                  <span>Start Your Journey</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform stroke-[2.5]" />
-                </button>
-              </SignUpButton>
+              >
+                <span>Start Your Journey</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform stroke-[2.5]" />
+              </GoogleSignInButton>
             ) : (
               <Link href="/board">
                 <button

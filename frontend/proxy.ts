@@ -1,14 +1,19 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { auth } from "@/auth";
+import { NextResponse } from "next/server";
 
-export default clerkMiddleware();
+export default auth((req) => {
+  const { pathname } = req.nextUrl;
+  const isProtected =
+    pathname === "/board" ||
+    pathname.startsWith("/board/") ||
+    pathname === "/home" ||
+    pathname.startsWith("/home/");
+
+  if (isProtected && !req.auth) {
+    return NextResponse.redirect(new URL("/", req.nextUrl.origin));
+  }
+});
 
 export const config = {
-  matcher: [
-    // Skip Next.js internals, static files, and unknown probe paths like /json/version
-    "/((?!_next|json(?:/|$)|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    // Always run for API routes
-    "/(api|trpc)(.*)",
-    // Clerk frontend API
-    "/__clerk/(.*)",
-  ],
+  matcher: ["/board/:path*", "/home/:path*"],
 };
