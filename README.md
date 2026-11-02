@@ -9,6 +9,10 @@
 <h1 align="center">🎨 ChalkAI</h1>
 
 <p align="center">
+  <a href="https://chalk-ai.abhishekdev.tech/"><strong>Try the live app</strong></a>
+</p>
+
+<p align="center">
   <strong>Transform rough sketches into professional diagrams with AI</strong>
 </p>
 
