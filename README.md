@@ -2,6 +2,8 @@
 
 Turn a rough sketch and a short explanation into a diagram with Gemini.
 
+[Try the live app](https://chalk-ai.abhishekdev.tech/) · [Watch the demo](#demo) · [Run locally](#run-locally)
+
 Built by [Abhishek Sonje](https://github.com/Abhishek-Sonje) and [Jaydeep](https://github.com/jaydxxp).
 
 ChalkAI combines a tldraw whiteboard with an AI suggestion workflow: draw, describe, generate, review, then accept or reject. Generation happens through a Next.js API route while the canvas remains available.
