@@ -1,60 +1,52 @@
-# Quick Setup Guide
+# Local setup
 
-## 1. Install Dependencies
+## Requirements
+
+- Node.js 20.9+ and npm.
+- Clerk publishable and secret keys.
+- A Gemini API key with access to `gemini-2.5-flash-image`.
+
+## Install and configure
+
+From the repository root:
 
 ```bash
 cd frontend
-bun install
+npm install
 ```
 
-## 2. Configure Environment Variables
+Create `.env.local` in this directory:
 
-Create a `.env.local` file in the `frontend` directory:
-
-```env
-GOOGLE_GENERATIVE_AI_API_KEY=your_api_key_here
-GEMINI_MODEL=gemini-2.0-flash-exp
+```dotenv
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
 ```
 
-**Getting your API key:**
-1. Visit [Google AI Studio](https://aistudio.google.com/app/apikey)
-2. Sign in with your Google account
-3. Click "Create API Key"
-4. Copy the key and paste it in `.env.local`
-
-**Note:** The `GEMINI_MODEL` is optional. Default is `gemini-2.0-flash-exp`. If that model isn't available, try:
-- `gemini-1.5-flash`
-- `gemini-1.5-pro`
-
-## 3. Run the Development Server
+Start the app:
 
 ```bash
-bun run dev
+npm run dev
 ```
 
-## 4. Open in Browser
+Open [localhost:3000](http://localhost:3000), sign in and open the board. Connect a Gemini key through the board's key settings.
 
-Navigate to [http://localhost:3000](http://localhost:3000)
+The backend accepts `GOOGLE_GENERATIVE_AI_API_KEY` as a fallback, but the current board still asks users to connect a key. The image model is defined in [the API route](app/api/complete-diagram/route.ts); setting `GEMINI_MODEL` does not change it.
 
-## Testing the Application
+## Verify manually
 
-1. **Draw something**: Use the whiteboard to create a rough sketch
-2. **Enter intent**: Type a description (e.g., "flowchart showing user login process")
-3. **Get suggestion**: Click "Get AI Suggestion"
-4. **Accept**: Press TAB to accept the refined diagram
+1. Draw a few shapes and enter a description.
+2. Generate a suggestion and inspect the preview.
+3. Press `Tab` to accept it.
+4. Generate another suggestion and press `Esc` to dismiss it.
 
 ## Troubleshooting
 
-### API Key Issues
-- Make sure `.env.local` is in the `frontend` directory
-- Restart the dev server after adding/changing environment variables
-- Verify the API key is valid in Google AI Studio
+- **Sign-in fails:** check the Clerk keys and application settings, then restart the dev server.
+- **No image is returned:** check the Gemini key's model access and quota, then inspect the server error.
+- **Voice input is unavailable:** use a browser with speech recognition support, allow microphone access, or use typed input.
+- **Production build fails on Windows:** the build script uses Unix `cp` commands; run it in WSL or a compatible shell.
+- **Canvas export fails:** try a small sketch and inspect the browser console.
 
-### Export Issues
-- Make sure you've drawn something before requesting a suggestion
-- Check browser console for errors
+Connected keys are stored in browser local storage and sent to the application server. Prompts and exported sketches are sent to Gemini.
 
-### Model Not Found
-- Try changing `GEMINI_MODEL` to `gemini-1.5-flash` in `.env.local`
-- Check [Google AI documentation](https://ai.google.dev/docs) for available models
-
+For architecture, API details and development commands, see [the project README](../README.md).
