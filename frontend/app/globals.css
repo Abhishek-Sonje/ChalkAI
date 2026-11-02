@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import "../node_modules/tailwindcss/index.css";
 
 
 
@@ -17,9 +17,14 @@
   --chalk-blue-soft: #e8eef8;
   --chalk-border: #d0cfc7;
   --chalk-border-soft: #e8e7e0;
-  
-  --font-sketch: var(--font-sketch);
-  --font-body: var(--font-body);
+
+  --muted: #f4f3ee;
+  --muted-foreground: #888888;
+  --border: #d0cfc7;
+  --input: #d0cfc7;
+  --primary: #1a1a1a;
+  --primary-foreground: #ffffff;
+  --ring: #7b5ea7;
   
   --radius: 0.75rem;
 }
@@ -58,11 +63,16 @@
   }
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 /* Glassmorphism utility for floating islands */
@@ -75,4 +85,20 @@ body {
     0 4px 6px -1px rgba(0, 0, 0, 0.02),
     0 2px 4px -1px rgba(0, 0, 0, 0.02),
     0 12px 24px -4px rgba(0, 0, 0, 0.05);
+}
+
+/* Extra-shape menus portal into .tl-container; keep them above the prompt bar.
+   Layout is pointer-events: none except on actual tldraw controls. */
+.tl-container {
+  z-index: auto !important;
+  isolation: auto !important;
+}
+.tlui-layout {
+  overflow: visible !important;
+  contain: none !important;
+  z-index: 20 !important;
+}
+.tlui-popover__content,
+.tl-container [data-radix-popper-content-wrapper] {
+  z-index: 40 !important;
 }

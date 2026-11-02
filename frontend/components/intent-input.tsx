@@ -1,7 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { Input } from "@/components/ui/input"
+import { useState } from "react"
 
 interface IntentInputProps {
   onIntentChange: (intent: string) => void
@@ -12,16 +11,17 @@ interface IntentInputProps {
 
 export function IntentInput({ onIntentChange, onSubmit, disabled, resetSignal }: IntentInputProps) {
   const [intent, setIntent] = useState("")
+  const [prevReset, setPrevReset] = useState(resetSignal)
 
-  // Reset intent when resetSignal changes
-  useEffect(() => {
+  if (resetSignal !== prevReset) {
+    setPrevReset(resetSignal)
     if (resetSignal !== undefined && resetSignal > 0) {
       setIntent("")
     }
-  }, [resetSignal])
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.slice(0, 120) // Enforce 120 char limit
+    const value = e.target.value.slice(0, 120)
     setIntent(value)
     onIntentChange(value)
   }
@@ -34,7 +34,7 @@ export function IntentInput({ onIntentChange, onSubmit, disabled, resetSignal }:
   }
 
   return (
-    <div className="w-full ">
+    <div className="w-full min-w-0">
       <input
         type="text"
         placeholder="Type a command or describe a diagram..."
@@ -48,4 +48,3 @@ export function IntentInput({ onIntentChange, onSubmit, disabled, resetSignal }:
     </div>
   )
 }
-

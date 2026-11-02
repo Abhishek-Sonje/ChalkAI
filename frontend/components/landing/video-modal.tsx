@@ -30,7 +30,7 @@ export function VideoModal({ isOpen, onClose, videoUrl }: VideoModalProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="relative w-full max-w-5xl aspect-video bg-white rounded-3xl border-4 border-chalk-border shadow-[12px_12px_0px_0px_var(--chalk-border)] overflow-hidden z-10"
+            className="relative w-full max-w-5xl aspect-video bg-white rounded-2xl sm:rounded-3xl border-2 sm:border-4 border-chalk-border shadow-[6px_6px_0px_0px_var(--chalk-border)] sm:shadow-[12px_12px_0px_0px_var(--chalk-border)] overflow-hidden z-10"
           >
             {/* Close Button */}
             <button
@@ -46,7 +46,9 @@ export function VideoModal({ isOpen, onClose, videoUrl }: VideoModalProps) {
                 <iframe
                   src={videoUrl}
                   className="w-full h-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  title="Chalk AI demo"
                   allowFullScreen
                 />
               ) : (
@@ -56,7 +58,7 @@ export function VideoModal({ isOpen, onClose, videoUrl }: VideoModalProps) {
                   </div>
                   <h3 className="font-sketch text-2xl font-bold text-chalk-ink">Demo Video Coming Soon</h3>
                   <p className="text-chalk-gray max-w-md font-medium">
-                    We're currently polishing the ultimate Chalk AI demonstration. Stay tuned for a full walkthrough of our AI-powered intelligent board!
+                    We&apos;re currently polishing the ultimate Chalk AI demonstration. Stay tuned for a full walkthrough of our AI-powered intelligent board!
                   </p>
                 </div>
               )}

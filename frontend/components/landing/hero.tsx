@@ -7,7 +7,7 @@ import { FadeIn } from "./fade-in";
 import { PlayIcon, SparkleIcon } from "./icons";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { VideoModal } from "./video-modal";
-import { SignInButton, SignUpButton, useAuth } from "@clerk/nextjs";
+import { GoogleSignInButton, useIsSignedIn } from "@/components/auth-buttons";
 import { DecorativeIcon } from "./decorative-icon";
 
 const SketchMark = ({ flip = false }: { flip?: boolean }) => (
@@ -144,11 +144,15 @@ const TriangleSketch = () => (
    ========================= */
 export function Hero() {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
-  const { isSignedIn } = useAuth();
+  const { isSignedIn } = useIsSignedIn();
 
   return (
-    <section className="relative min-h-[calc(100dvh-76px)] grid grid-cols-1 lg:grid-cols-2 items-center gap-12 px-[5vw] py-12 mx-auto overflow-hidden bg-[#faf9f5]">
-      <VideoModal isOpen={isVideoOpen} onClose={() => setIsVideoOpen(false)} />
+    <section className="relative min-h-[calc(100dvh-76px)] grid grid-cols-1 lg:grid-cols-2 items-center gap-8 lg:gap-12 px-[5vw] py-8 sm:py-12 mx-auto overflow-hidden bg-[#faf9f5]">
+      <VideoModal
+        isOpen={isVideoOpen}
+        onClose={() => setIsVideoOpen(false)}
+        videoUrl="https://player.vimeo.com/video/1218572593?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1"
+      />
 
       {/* Decorative Icons */}
       <DecorativeIcon 
@@ -178,7 +182,7 @@ export function Hero() {
 
         {/* HIGH-CONTRAST SKETCH TYPOGRAPHY */}
         <FadeIn delay={80}>
-          <h1 className="font-sketch text-5xl md:text-6xl xl:text-6xl leading-[1.1] text-chalk-ink mb-6 tracking-tight">
+          <h1 className="font-sketch text-4xl sm:text-5xl md:text-6xl leading-[1.1] text-chalk-ink mb-6 tracking-tight">
             Teach. Draw.
             <br />
             Improve with{" "}
@@ -201,27 +205,25 @@ export function Hero() {
 
         {/* TACTILE CALL TO ACTIONS BAR */}
         <FadeIn delay={240}>
-          <div className="flex flex-wrap items-center gap-5">
+          <div className="flex flex-col sm:flex-wrap sm:flex-row items-stretch sm:items-center gap-3 sm:gap-5">
             {/* Main Action Call */}
             {!isSignedIn ? (
-              <SignUpButton mode="modal">
-                <button
-                  className="group inline-flex items-center gap-2 px-8 py-4 bg-chalk-ink text-white font-bold rounded-2xl border-2 border-chalk-ink
+              <GoogleSignInButton
+                className="group inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-chalk-ink text-white font-bold rounded-2xl border-2 border-chalk-ink
                                 shadow-[4px_4px_0px_0px_var(--chalk-purple)] hover:shadow-[2px_2px_0px_0px_var(--chalk-purple)]
                                 hover:-translate-y-0.5 active:translate-y-0 active:shadow-[0px_0px_0px_0px_transparent]
-                                transition-all duration-150"
-                >
-                  <span>Start Your Journey</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform stroke-[2.5]" />
-                </button>
-              </SignUpButton>
+                                transition-all duration-150 w-full sm:w-auto"
+              >
+                <span>Start Your Journey</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform stroke-[2.5]" />
+              </GoogleSignInButton>
             ) : (
-              <Link href="/board">
+              <Link href="/boards" className="w-full sm:w-auto">
                 <button
-                  className="group inline-flex items-center gap-2 px-8 py-4 bg-chalk-ink text-white font-bold rounded-2xl border-2 border-chalk-ink
+                  className="group inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-chalk-ink text-white font-bold rounded-2xl border-2 border-chalk-ink
                                 shadow-[4px_4px_0px_0px_var(--chalk-purple)] hover:shadow-[2px_2px_0px_0px_var(--chalk-purple)]
                                 hover:-translate-y-0.5 active:translate-y-0 active:shadow-[0px_0px_0px_0px_transparent]
-                                transition-all duration-150"
+                                transition-all duration-150 w-full sm:w-auto"
                 >
                   <span>Go to My Board</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform stroke-[2.5]" />
@@ -232,10 +234,10 @@ export function Hero() {
             {/* Video Interactive Layer Hook */}
             <button
               onClick={() => setIsVideoOpen(true)}
-              className="group inline-flex items-center gap-3 px-6 py-4 bg-white text-chalk-ink font-bold rounded-2xl border-2 border-chalk-border
+              className="group inline-flex items-center justify-center gap-3 px-6 py-3.5 sm:py-4 bg-white text-chalk-ink font-bold rounded-2xl border-2 border-chalk-border
                                shadow-[4px_4px_0px_0px_var(--chalk-border)] hover:shadow-[2px_2px_0px_0px_var(--chalk-border)]
                                hover:-translate-y-0.5 active:translate-y-0 active:shadow-[0px_0px_0px_0px_transparent]
-                               transition-all duration-150"
+                               transition-all duration-150 w-full sm:w-auto"
             >
               <span className="w-7 h-7 bg-[#faf9f5] border-2 border-chalk-border rounded-lg flex items-center justify-center group-hover:bg-[#f1ebfa] group-hover:border-chalk-purple transition-colors">
                 <PlayIcon className="w-3 h-3 text-chalk-ink group-hover:text-chalk-purple transition-colors" />
@@ -244,6 +246,10 @@ export function Hero() {
             </button>
           </div>
         </FadeIn>
+      </div>
+
+      <div className="lg:hidden w-full max-w-md mx-auto">
+        <TriangleSketch />
       </div>
 
       {/* RIGHT FRAME - UNTOUCHED & MAINTAINING 20% OVERFLOW */}

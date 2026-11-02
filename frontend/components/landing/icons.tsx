@@ -35,8 +35,14 @@ export const SparkleIcon = () => (
   </svg>
 );
 
-export const PlayIcon = () => (
-  <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+export const PlayIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    width="12"
+    height="12"
+    viewBox="0 0 12 12"
+    fill="currentColor"
+    {...props}
+  >
     <path d="M3 2l7 4-7 4z" />
   </svg>
 );

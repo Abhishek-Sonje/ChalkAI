@@ -3,7 +3,7 @@ export const Sparkle = () => (
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 87 87"
     fill="currentColor"
-    style="color:#0a0000;"
+    style={{ color: "#0a0000" }}
     width="64"
     height="64"
     preserveAspectRatio="xMidYMid meet"

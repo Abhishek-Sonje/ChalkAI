@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
+import type { ImageModelProvider } from "@/lib/image-models";
 
 export const runtime = "nodejs";
 
 export async function POST(request: NextRequest) {
   try {
-    const { api_key } = (await request.json()) as { api_key: string };
+    const { api_key, provider } = (await request.json()) as {
+      api_key: string;
+      provider?: ImageModelProvider;
+    };
 
     if (!api_key?.trim()) {
       return NextResponse.json(
@@ -13,60 +17,67 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!api_key.startsWith("AIza")) {
-      return NextResponse.json({
-        valid: false,
-        reason: "That doesn't look like a valid Gemini API key. Keys start with 'AIza'.",
-      });
-    }
+    const kind = provider ?? "google";
 
-    // Make a real but minimal call to Gemini to validate the key
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${api_key}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: "Hi" }] }],
-        }),
+    if (kind === "google") {
+      if (!api_key.startsWith("AIza")) {
+        return NextResponse.json({
+          valid: false,
+          reason: "That doesn't look like a Gemini key. Keys start with 'AIza'.",
+        });
       }
-    );
-
-    if (response.ok) {
-      return NextResponse.json({ valid: true });
-    }
-
-    const data = await response.json().catch(() => ({}));
-    const errorCode = data?.error?.status ?? "";
-    const errorMessage = data?.error?.message ?? "";
-
-    if (response.status === 400 && errorMessage.includes("API_KEY_INVALID")) {
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${api_key}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: "Hi" }] }],
+          }),
+        }
+      );
+      if (response.ok || response.status === 429) {
+        return NextResponse.json({ valid: true });
+      }
+      const data = await response.json().catch(() => ({}));
       return NextResponse.json({
         valid: false,
-        reason: "Invalid API key. Please check and try again.",
+        reason: data?.error?.message ?? "Invalid Gemini API key.",
       });
     }
 
-    if (response.status === 403 || errorCode === "PERMISSION_DENIED") {
+    if (kind === "openai") {
+      const response = await fetch("https://api.openai.com/v1/models", {
+        headers: { Authorization: `Bearer ${api_key}` },
+      });
+      if (response.ok || response.status === 429) {
+        return NextResponse.json({ valid: true });
+      }
       return NextResponse.json({
         valid: false,
-        reason: "API key is valid but doesn't have permission to use Gemini. Enable the Generative Language API in your Google Cloud project.",
+        reason: "Invalid OpenAI API key.",
       });
     }
 
-    if (response.status === 429 || errorCode === "RESOURCE_EXHAUSTED") {
-      // Key works, just rate-limited — treat as valid
+    if (kind === "flux") {
+      if (api_key.length < 10) {
+        return NextResponse.json({ valid: false, reason: "That Fal.ai key looks too short." });
+      }
       return NextResponse.json({ valid: true });
     }
 
-    return NextResponse.json({
-      valid: false,
-      reason: `Gemini returned an error: ${errorMessage || response.statusText}`,
-    });
+    if (kind === "midjourney") {
+      if (api_key.length < 8) {
+        return NextResponse.json({ valid: false, reason: "That Midjourney / GoAPI key looks too short." });
+      }
+      return NextResponse.json({ valid: true });
+    }
+
+    return NextResponse.json({ valid: false, reason: "Unknown provider." });
   } catch (error) {
     console.error("Key validation error:", error);
     return NextResponse.json(
-      { valid: false, reason: "Could not reach Gemini API. Check your internet connection." },
+      { valid: false, reason: "Could not reach the provider. Check your internet connection." },
       { status: 500 }
     );
   }

@@ -1,21 +1,32 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { auth } from "@/auth";
+import { NextResponse } from "next/server";
 
-// Define which routes are public. All other routes will require authentication.
-// / is public, /board is protected.
-const isPublicRoute = createRouteMatcher(["/"]);
+export default auth((req) => {
+  const { pathname } = req.nextUrl;
+  const isProtected =
+    pathname === "/boards" ||
+    pathname.startsWith("/boards/") ||
+    pathname === "/account" ||
+    pathname.startsWith("/account/") ||
+    pathname === "/board" ||
+    pathname.startsWith("/board/") ||
+    pathname === "/home" ||
+    pathname.startsWith("/home/");
 
-export default clerkMiddleware(async (auth, request) => {
-  if (!isPublicRoute(request)) {
-    // Protect all non-public routes
-    await auth.protect();
+  if (isProtected && !req.auth) {
+    return NextResponse.redirect(new URL("/", req.nextUrl.origin));
   }
 });
 
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
-    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    // Always run for API routes
-    "/(api|trpc)(.*)",
+    "/board",
+    "/board/:path*",
+    "/boards",
+    "/boards/:path*",
+    "/account",
+    "/account/:path*",
+    "/home",
+    "/home/:path*",
   ],
 };
