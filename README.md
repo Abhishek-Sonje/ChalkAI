@@ -1,348 +1,138 @@
-<p align="center">
-  <img src="https://img.shields.io/badge/Next.js-16.1.1-black?style=for-the-badge&logo=next.js" alt="Next.js">
-  <img src="https://img.shields.io/badge/React-19.2.3-61DAFB?style=for-the-badge&logo=react" alt="React">
-  <img src="https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript" alt="TypeScript">
-  <img src="https://img.shields.io/badge/Tailwind_CSS-4.x-38B2AC?style=for-the-badge&logo=tailwind-css" alt="Tailwind CSS">
-  <img src="https://img.shields.io/badge/Google_Gemini-AI-4285F4?style=for-the-badge&logo=google" alt="Gemini AI">
-</p>
+# ChalkAI
 
-<h1 align="center">🎨 ChalkAI</h1>
+Turn a rough sketch and a short explanation into a diagram with Gemini.
 
-<p align="center">
-  <strong>Transform rough sketches into professional diagrams with AI</strong>
-</p>
+Built by [Abhishek Sonje](https://github.com/Abhishek-Sonje) and [Jaydeep](https://github.com/jaydxxp).
 
-<p align="center">
-  An intelligent whiteboard application that uses Google Gemini to refine hand-drawn sketches into clean, publication-ready diagrams.
-</p>
+ChalkAI combines a tldraw whiteboard with an AI suggestion workflow: draw, describe, generate, review, then accept or reject. Generation happens through a Next.js API route while the canvas remains available.
 
-<p align="center">
-  <strong>Built by <a href="https://github.com/Abhishek-Sonje">Abhishek</a> & <a href="https://github.com/jaydxxp">Jaydeep</a></strong>
-</p>
-
----
-
-## 🎥 Demo
-
-
-
-
+## Demo
 
 https://github.com/user-attachments/assets/69496cf1-7e2d-4a32-bc0d-b29b8c92ade3
 
+## Features
 
+- **Interactive canvas:** freehand drawing, shapes, arrows and selection through tldraw.
+- **Sketch and text input:** send a sketch with an explanation, or generate from a text prompt.
+- **Selection-aware generation:** export selected shapes, or the current page when nothing is selected.
+- **Preview before accepting:** inspect the generated image before replacing the exported shapes.
+- **Keyboard controls:** `Tab` accepts a suggestion; `Esc` dismisses it.
+- **Voice input:** browser speech recognition provides another way to describe an idea.
+- **Account access:** Clerk protects the board and API routes.
+- **Bring your own key:** configure a Gemini key through the board settings.
 
+Generated diagrams are PNG images placed on the canvas, rather than editable vector shapes.
 
+## Run locally
 
----
-
-## ✨ Features
-
-| Feature | Description |
-|---------|-------------|
-| 🖌️ **Interactive Whiteboard** | Full-featured drawing canvas powered by tldraw with support for freehand drawing, shapes, arrows, and more |
-| 🤖 **AI-Powered Refinement** | Leverages Google Gemini 2.5 Flash to transform rough sketches into professional diagrams |
-| 🎤 **Voice Input** | Describe your diagram intent using voice commands with automatic idle detection |
-| ⚡ **Quick Enhance** | One-click enhancement to instantly improve any sketch |
-| 🎯 **Selection-Aware** | Refine specific parts of your canvas by selecting shapes before generating |
-| ⌨️ **Keyboard Shortcuts** | Accept suggestions with `Tab`, reject with `Esc` for rapid iteration |
-| 🎨 **Glass Morphism UI** | Modern, sleek interface with smooth animations powered by Framer Motion |
-
----
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- **Node.js** 18+ or **Bun** runtime
-- **Google Gemini API Key** ([Get one here](https://aistudio.google.com/app/apikey))
-
-### Installation
+Requirements: **Node.js 20.9+**, npm, [Clerk credentials](https://dashboard.clerk.com/) and a [Gemini API key](https://aistudio.google.com/app/apikey) with access to the configured image model.
 
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/ChalkAI.git
+git clone https://github.com/Abhishek-Sonje/ChalkAI.git
 cd ChalkAI/frontend
-
-# Install dependencies
 npm install
-# or
-bun install
 ```
 
-### Environment Setup
+Create `frontend/.env.local`:
 
-Create a `.env.local` file in the `frontend` directory:
-
-```env
-GOOGLE_GENERATIVE_AI_API_KEY=your_api_key_here
+```dotenv
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
 ```
-
-### Run Development Server
 
 ```bash
 npm run dev
-# or
-bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [localhost:3000](http://localhost:3000), sign in, open the board and connect your Gemini key in the key settings.
 
----
+The API route also accepts `GOOGLE_GENERATIVE_AI_API_KEY` as a server fallback. The current board still prompts users to connect their own key. The image model is set in the route to `gemini-2.5-flash-image`; `GEMINI_MODEL` is not read by the current implementation.
 
-## 📖 How to Use
+## Try the workflow
 
-<table>
-<tr>
-<td width="60">
+1. Draw a simple flow, such as a user logging into an application.
+2. Select the shapes you want to refine, or leave the selection empty to use the page.
+3. Enter a description and press the generate button, or use Quick Enhance.
+4. Review the image in the suggestion panel.
+5. Press `Tab` to replace the exported shapes, or `Esc` to keep the original.
 
-**1️⃣**
+Voice input requires a browser with speech recognition support and microphone access. Typed prompts work independently of voice support.
 
-</td>
-<td>
-
-**Draw** — Sketch your diagram idea on the whiteboard
-
-</td>
-</tr>
-<tr>
-<td>
-
-**2️⃣**
-
-</td>
-<td>
-
-**Describe** — Type or speak what your diagram represents
-
-</td>
-</tr>
-<tr>
-<td>
-
-**3️⃣**
-
-</td>
-<td>
-
-**Generate** — Click the `+` button or use the ✨ Quick Enhance
-
-</td>
-</tr>
-<tr>
-<td>
-
-**4️⃣**
-
-</td>
-<td>
-
-**Review** — See the AI-generated diagram in the preview panel
-
-</td>
-</tr>
-<tr>
-<td>
-
-**5️⃣**
-
-</td>
-<td>
-
-**Accept** — Press `Tab` to replace your sketch with the refined diagram
-
-</td>
-</tr>
-</table>
-
-### Voice Input 🎤
-
-1. Click the **microphone button** to start listening
-2. Describe your diagram verbally
-3. Stop speaking for 4.5 seconds or click the mic again
-4. The AI automatically generates based on your voice description
-
----
-
-## 🏗️ Architecture
+## Architecture
 
 ```mermaid
-graph TD
-    A[User Draws Sketch] --> B[tldraw Canvas]
-    B --> C[Export to PNG]
-    C --> D["/api/complete-diagram"]
-    D --> E["Google Gemini 2.5 Flash"]
-    E --> F[Generated PNG]
-    F --> G[Preview Panel]
-    G -->|Tab| H[Accept & Replace]
-    G -->|Esc| I[Reject & Keep Original]
+flowchart TD
+    Canvas["tldraw canvas"] --> Export["Export selected shapes or page as PNG"]
+    Prompt["Text or voice description"] --> Route["Next.js API route"]
+    Export --> Route
+    Route --> Gemini["Gemini image generation"]
+    Gemini --> Preview["Suggestion preview"]
+    Preview -->|Tab| Accept["Replace exported shapes with PNG"]
+    Preview -->|Esc| Dismiss["Dismiss suggestion"]
 ```
 
----
+| Layer | Technology and role |
+| --- | --- |
+| Application | Next.js App Router, React and TypeScript |
+| Canvas | tldraw editor, selection export and image assets |
+| Generation | Vercel AI SDK and Google Gemini |
+| Authentication | Clerk |
+| Interface | Tailwind CSS and Framer Motion |
 
-## 📂 Project Structure
+## Code map
 
-```
-frontend/
-├── app/
-│   ├── api/
-│   │   └── complete-diagram/
-│   │       └── route.ts        # AI processing endpoint
-│   ├── page.tsx                # Main application page
-│   ├── layout.tsx              # Root layout with metadata
-│   └── globals.css             # Global styles & theme
-├── components/
-│   ├── ui/                     # Reusable UI components
-│   │   └── button.tsx          # Button component with variants
-│   ├── whiteboard.tsx          # tldraw canvas wrapper
-│   └── intent-input.tsx        # Text input for diagram intent
-├── lib/
-│   └── utils.ts                # Utility functions (cn helper)
-└── types/
-    └── speech-recognition.d.ts # TypeScript declarations
-```
+| Location | Responsibility |
+| --- | --- |
+| [frontend/components/board-client.tsx](frontend/components/board-client.tsx) | Prompt submission, voice input, loading and suggestion state |
+| [frontend/components/whiteboard.tsx](frontend/components/whiteboard.tsx) | Canvas export and image replacement |
+| [frontend/app/api/complete-diagram/route.ts](frontend/app/api/complete-diagram/route.ts) | Gemini request and image response |
+| [frontend/components/api-key-provider.tsx](frontend/components/api-key-provider.tsx) | Browser key storage and settings state |
+| [frontend/proxy.ts](frontend/proxy.ts) | Route authentication |
+| [frontend/app/board/page.tsx](frontend/app/board/page.tsx) | Board page |
 
----
+## Generation endpoint
 
-## 🛠️ Tech Stack
-
-| Category | Technology |
-|----------|------------|
-| **Framework** | Next.js 16 (App Router) |
-| **UI Library** | React 19 |
-| **Language** | TypeScript 5 |
-| **Styling** | Tailwind CSS 4 |
-| **Animations** | Framer Motion |
-| **Whiteboard** | tldraw v4 |
-| **AI Integration** | Vercel AI SDK + Google Gemini |
-| **Components** | Custom + shadcn/ui patterns |
-
----
-
-## 🔌 API Reference
-
-### `POST /api/complete-diagram`
-
-Generates a refined diagram from a sketch and text description.
-
-**Request Body:**
+`POST /api/complete-diagram` requires an authenticated session.
 
 ```json
 {
-  "prompt": "A flowchart showing user authentication process",
-  "image_data": "base64_encoded_png_data"
+  "prompt": "A flowchart showing a user logging in",
+  "image_data": "optional_base64_encoded_png"
 }
 ```
 
-**Response:**
+Send a user key in the `x-gemini-api-key` header, or configure the server fallback.
+
+Successful response:
 
 ```json
 {
-  "image_data": "base64_encoded_generated_png"
+  "image_data": "base64_encoded_generated_image"
 }
 ```
 
-**Error Response:**
+The route returns an error when credentials or a prompt are missing, generation fails, or the model returns no image.
 
-```json
-{
-  "error": "Error message",
-  "details": "Additional error details"
-}
-```
+## Development commands
 
----
+Run these from `frontend/`:
 
-## ⌨️ Keyboard Shortcuts
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the development server |
+| `npm run lint` | Run ESLint |
+| `npm run build` | Build standalone output and copy its static assets |
+| `npm run start` | Start the standalone server after building |
 
-| Shortcut | Action |
-|----------|--------|
-| `Tab` | Accept the AI suggestion |
-| `Esc` | Reject the AI suggestion |
-| *tldraw shortcuts* | All standard tldraw shortcuts work |
+The build script uses Unix `cp` commands. On Windows, use WSL or a compatible shell for that script.
 
----
+## Data handling and limitations
 
-## 🧩 Key Components
+- The browser stores a connected Gemini key in local storage and sends it to the application server for API requests.
+- Prompts and exported sketches are sent to Gemini for generation.
+- Image output may change labels or interpret a sketch incorrectly; review each suggestion.
+- Generation depends on model access, quota and provider availability.
+- Voice recognition support varies by browser.
+- This repository does not currently include an automated test suite.
 
-### `<Whiteboard />`
-The core canvas component wrapping tldraw. Handles:
-- Canvas mounting and export functionality
-- Selection-aware image export
-- AI suggestion acceptance (Tab key)
-- Drawing activity detection for voice input
-
-### `<IntentInput />`
-A minimal text input for describing diagram intent with:
-- 120 character limit
-- Clean, borderless design
-- Submit on Enter
-
----
-
-## 📦 Scripts
-
-```bash
-# Development server with hot reload
-npm run dev
-
-# Production build
-npm run build
-
-# Start production server
-npm run start
-
-# Run ESLint
-npm run lint
-```
-
----
-
-## 🔧 Troubleshooting
-
-<details>
-<summary><strong>❌ API Key Issues</strong></summary>
-
-- Ensure `.env.local` is in the `frontend` directory
-- Restart the dev server after modifying environment variables
-- Verify your API key is valid at [Google AI Studio](https://aistudio.google.com/)
-</details>
-
-<details>
-<summary><strong>❌ LightningCSS Binary Error (Windows)</strong></summary>
-
-If you see an error about `lightningcss.win32-x64-msvc.node`:
-
-```powershell
-npm install lightningcss-win32-x64-msvc
-Copy-Item "node_modules\lightningcss-win32-x64-msvc\lightningcss.win32-x64-msvc.node" "node_modules\lightningcss\lightningcss.win32-x64-msvc.node"
-Remove-Item -Recurse -Force .next
-npm run dev
-```
-</details>
-
-<details>
-<summary><strong>❌ No Image Generated</strong></summary>
-
-- Make sure you've drawn something on the canvas
-- Check that your Gemini API key has access to image generation models
-- Look at browser console and terminal for detailed error messages
-</details>
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
----
-
-## 📄 License
-
-MIT License — feel free to use this project for personal or commercial purposes.
-
----
-
-<p align="center">
-  Made with ❤️ using Next.js, tldraw, and Google Gemini
-</p>
+See [the setup guide](frontend/SETUP.md) for a compact checklist.
