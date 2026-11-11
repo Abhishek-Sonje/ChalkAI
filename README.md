@@ -9,7 +9,7 @@
 <h1 align="center">🎨 ChalkAI</h1>
 
 <p align="center">
-  <a href="https://chalk-ai.abhishekdev.tech/"><strong>Try the live app</strong></a>
+  <a href="https://chalk-ai.vercel.app/"><strong>Try the live app</strong></a>
 </p>
 
 <p align="center">
